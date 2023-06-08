@@ -1,7 +1,10 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.0"
+ruby "3.2.2"
+
+# For env variables
+gem 'dotenv-rails', require: 'dotenv/rails-now'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4", ">= 7.0.4.3"
@@ -10,7 +13,7 @@ gem "rails", "~> 7.0.4", ">= 7.0.4.3"
 gem "sprockets-rails"
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4"
+#gem "sqlite3", "~> 1.4"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
@@ -77,4 +80,10 @@ end
 
 gem 'rack-cors', :require => 'rack/cors'
 gem 'geocoder'
+# [START gems]
+gem "pg", "~> 1.2"
+gem "google-cloud-storage" # for google cloud storage
+gem "appengine", "~> 0.6"
+gem "zlib"
+# [END gems]
 

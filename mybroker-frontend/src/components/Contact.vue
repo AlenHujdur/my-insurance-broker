@@ -130,7 +130,7 @@ methods: {
     alert('Thank you for contacting us!');
 
     console.log(JSON.stringify(this));
-    axios.post('http://localhost:3000/api/v1/new-subscriber', { name: this.name, email: this.email, message: this.message, phone: this.phone  })
+    axios.post('https://mybrokerservice-ijciww6s2q-ew.a.run.app/api/v1/new-subscriber', { name: this.name, email: this.email, message: this.message, phone: this.phone  })
       .then(response => {
         // Handle the success response
         console.log('Subscribed successfully!');

@@ -22,3 +22,10 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### For App Engine
+```
+run npm install
+run npm run build
+run gcloud app deploy
+```

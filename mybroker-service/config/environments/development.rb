@@ -81,4 +81,5 @@ Rails.application.configure do
       :ssl                  => true,
       #:enable_starttls_auto => true
     }
+  #config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA1
 end

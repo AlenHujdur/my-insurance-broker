@@ -2,6 +2,10 @@
 require "faker"
 
 FactoryBot.define do
+  factory :nacebel do
+    
+  end
+
   random = Faker::Address
   _city = random.city
   _street = random.street_address

@@ -6,7 +6,7 @@ class SubscribersController < ApplicationController
     @subscriber = Subscriber.new
   end
   def create
-    @subscriber = Subscriber.new(subscriber_params)
+    @subscriber = Subscriber.new #(subscriber_params)
     if @subscriber.save
       SubscriberMailer.send_notification(@subscriber).deliver_now
       redirect_to subscribers_path

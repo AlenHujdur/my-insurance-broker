@@ -297,7 +297,7 @@ export default {
     async subscribe() {
     let authenticityToken = '';
     try {
-        const response = await axios.get('http://localhost:3000/authenticity_token');
+        const response = await axios.get('https://mybrokerservice-ijciww6s2q-ew.a.run.app/authenticity_token');
         authenticityToken = response.data.token;
         console.log('Authenticity token:', authenticityToken);
         //CRSF_TOKEN not needed based on this artical https://www.appsignal.com/for/invalid_authenticity_token
@@ -310,7 +310,7 @@ export default {
         'Content-Type': 'application/json'
     };
     //with axios
-    axios.post('http://localhost:3000/api/v1/new-subscriber', { email: this.email }, { headers })
+    axios.post('https://mybrokerservice-ijciww6s2q-ew.a.run.app/api/v1/new-subscriber', { email: this.email }, { headers })
         .then(response => {
         console.log(response, 'Subscribed successfully!');
         this.showModal = true;

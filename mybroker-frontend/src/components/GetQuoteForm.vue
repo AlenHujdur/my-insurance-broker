@@ -244,7 +244,7 @@
     const headers = {
         'Content-Type': 'application/json'
     };
-    axios.post('http://localhost:3000/api/v1/new-requested-quote', {
+    axios.post('https://mybrokerservice-ijciww6s2q-ew.a.run.app/api/v1/new-requested-quote', {
         subscriber: {
                 email: this.email,
                 phone: this.phone,

@@ -1,8 +1,7 @@
 list all subscribers
-<%=@authenticity_token%>
 <% @subscribers.each do |subscriber| %>
-  Name: <%= subscriber.name %>
-  Email: <%= subscriber.email %>
-  Phone: <%= subscriber.phone %>
-  Message: <%= subscriber.message%>
+  Name: <%= subscriber.name %><br>
+  Email: <%= subscriber.email %> <br>
+  Phone: <%= subscriber.phone %> <br>
+  Message: <%= subscriber.message%> <br>
 <% end %>

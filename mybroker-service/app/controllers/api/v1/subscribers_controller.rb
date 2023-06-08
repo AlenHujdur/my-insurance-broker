@@ -1,7 +1,8 @@
 class Api::V1::SubscribersController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token, only: [:create]
+  skip_forgery_protection with: :null_session, only: [:create]
   def create
-    @subscriber = Subscriber.new(subscriber_params)
+    @subscriber = Subscriber.new #(subscriber_params)
 
     if @subscriber.save
       SubscriberMailer.send_notification(@subscriber).deliver_now

@@ -13,7 +13,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local       = true
   config.action_controller.perform_caching = true
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
@@ -38,7 +38,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  config.active_storage.service = :google
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
@@ -90,4 +90,17 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  #config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA1
+  config.action_mailer.default_url_options = { :host => 'localhost:8080', protocol: 'http' }
+
+  # SMTP settings for gmail
+  config.action_mailer.smtp_settings = {
+    :address              => ENV["HOST_SMTP"], #"smtp.gmail.com",
+    :port                 => ENV["PORT_SMTP"], #587,
+    :user_name            => ENV["EMAIL"],
+    :password             => ENV["EMAIL_PASSWORD"],
+    :authentication       => "plain",
+    :ssl                  => true,
+    #:enable_starttls_auto => true
+  }
 end
