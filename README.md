@@ -29,8 +29,30 @@ The Vue.js frontend is hosted on App Engine. To build vue project for production
 
 For detaild info about Rails deployment on GCP, please visit https://cloud.google.com/ruby/rails/run
 
-### Environment Variables
-The Rails backend relies on environment variables for configuration. These variables are loaded from a .env file in the production environment. It is essential to ensure that the required variables are properly set before deploying the application. Please refer to the .env file for the specific environment variables and their values.
+### Environment Variables for production
+Create a .env file: In the root directory of your Rails project, create a file named .env.
+The Rails backend relies on environment variables for configuration. These variables are loaded from a .env file in the production environment. It is essential to ensure that the required variables are properly set before deploying the application. 
+List of environment variables which should be filled in in .env file, in the root of Rails project:
+
+PRODUCTION_DB_NAME= 
+PRODUCTION_DB_USERNAME= 
+PRODUCTION_DB_HOST= 
+CLOUD_SQL_CONNECTION_NAME= 
+GOOGLE_PROJECT_ID=
+STORAGE_BUCKET_NAME=
+API_URL= 
+API_KEY=
+INSTANCE_NAME=
+DATABASE_NAME=
+REGION=
+DEVSHELL_PROJECT_ID=
+BUCKET_NAME=
+EMAIL=
+EMAIL_PASSWORD=
+HOST_SMTP=
+PORT_SMTP=
+APP_NAME=
+ORIGIN=
 
 ### Rails Backend
 The Rails backend of the MyBroker Insurance project handles data management and implements the core business logic. It utilizes PostgreSQL as the database management system. The backend includes the following key components:
