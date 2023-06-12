@@ -6,12 +6,11 @@ class HandleSubscriber
 
   def create
     subscriber = find_or_create_subscriber
-
     requested_quote = RequestedQuote.new(requested_quote_params)
     requested_quote.subscriber = subscriber
     requested_quote.subscriber_id = subscriber.id # Assign subscriber_id to requested_quote
 
-    if requested_quote.save
+    if requested_quote.save!
       { success: true, message: 'Requested quote created successfully!' }
     else
       { success: false, error: 'Failed to create requested quote' }
@@ -28,6 +27,7 @@ class HandleSubscriber
     return @subscriber if @subscriber.save! && SubscriberMailer.send_notification(@subscriber).deliver_now
   end
 
+  private
   def requested_quote_params
     @requested_quote_params
   end

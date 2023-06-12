@@ -10,17 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_21_174910) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema[7.0].define(version: 2023_06_08_084154) do
+  create_table "nacebels", force: :cascade do |t|
+    t.integer "level_nr"
+    t.string "code"
+    t.string "parent_code"
+    t.text "label_nl"
+    t.text "label_fr"
+    t.text "label_de"
+    t.text "label_en"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "requested_quotes", force: :cascade do |t|
-    t.bigint "subscriber_id", null: false
-    t.string "business_type"
-    t.string "industry"
-    t.decimal "policy_limit", precision: 10, scale: 2
-    t.decimal "deductible", precision: 10, scale: 2
-    t.integer "coverage_period"
+    t.integer "subscriber_id", null: false
+    t.boolean "natural_person", default: false, null: false
+    t.string "enterprise_number", limit: 10, null: false
+    t.string "legal_name", null: false
+    t.decimal "annual_revenue", precision: 10, scale: 2
+    t.string "deductible_formula", default: "medium"
+    t.string "coverage_ceiling_formula", default: "small"
+    t.text "nacebel_codes", default: "[]", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["subscriber_id"], name: "index_requested_quotes_on_subscriber_id"

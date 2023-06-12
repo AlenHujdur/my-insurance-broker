@@ -20,15 +20,15 @@ steps:
       ]
     secretEnv: ["RAILS_KEY"]
 
-#  - id: "run tasks"
-#    name: "gcr.io/google-appengine/exec-wrapper"
-#    entrypoint: "bash"
-#    args:
-#      [
-#        "-c",
-#        "/buildstep/execute.sh -i gcr.io/${PROJECT_ID}/${_SERVICE_NAME} -s ${PROJECT_ID}:${_REGION}:${_INSTANCE_NAME} -e RAILS_MASTER_KEY=$$RAILS_KEY -- bundle exec rake db:seed"
-#      ]
-#    secretEnv: ["RAILS_KEY"]
+  #- id: "run tasks"
+  #  name: "gcr.io/google-appengine/exec-wrapper"
+  #  entrypoint: "bash"
+  #  args:
+  #    [
+  #      "-c",
+  #     "/buildstep/execute.sh -i gcr.io/${PROJECT_ID}/${_SERVICE_NAME} -s ${PROJECT_ID}:${_REGION}:${_INSTANCE_NAME} -e RAILS_MASTER_KEY=$$RAILS_KEY -- bundle exec rake db:seed"
+  #    ]
+  #  secretEnv: ["RAILS_KEY"]
 
 substitutions:
   _REGION: europe-west1 #-b

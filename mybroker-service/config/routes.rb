@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   #
   namespace :api do
     namespace :v1 do
+      get 'nacebels', to: 'nacebels#index'
       post 'new-subscriber', to: 'subscribers#create'
       post 'new-requested-quote', to: 'requested_quotes#create'
     end

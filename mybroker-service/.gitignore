@@ -30,10 +30,11 @@
 !/tmp/storage/.keep
 
 /public/assets
-
-# Ignore master key for decrypting credentials and more.
+.DS_Store
+# For production on GCP comment out these lines below:
 /config/master.key
 /config/credentials.yml.enc
 .env
 dbpassword
 gcp_commands.txt
+
