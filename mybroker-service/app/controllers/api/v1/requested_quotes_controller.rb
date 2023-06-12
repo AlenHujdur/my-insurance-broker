@@ -8,7 +8,7 @@ class Api::V1::RequestedQuotesController < ApplicationController
     generate_quote = QuoteGenerator.new(requested_quote_params, subscriber_params)
 
     quote = generate_quote.generate
-    if result[:success] && quote[:success]
+    if !result.nil? && quote[:success]
       render json: { quote: quote }, status: :created
     else
       render json: { error: result[:error] }, status: :unprocessable_entity

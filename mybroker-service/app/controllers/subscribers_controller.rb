@@ -1,6 +1,6 @@
 class SubscribersController < ApplicationController
   def index
-    @subscribers = Subscriber.all
+    #@subscribers = Subscriber.all
   end
   def new
     @subscriber = Subscriber.new
