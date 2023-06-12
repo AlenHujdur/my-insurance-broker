@@ -38,7 +38,6 @@ In the root folder of the Rails project (mybroker-service), run the **./run_app.
 
 Set up the Vue.js project dependencies using a package manager npm. Run npm install, and
 start the local development server using the command **npm run serve**.
-Please refer to the project's documentation or README file for more detailed instructions on setting up the local development environment.
 
 ## Conclusion
 The MyBroker Insurance project combines the power of Rails backend and Vue.js frontend to provide a comprehensive insurance brokerage solution. The Rails backend manages the data and implements the business logic, while the Vue.js frontend offers an intuitive user interface. By deploying the project on Google Cloud Platform, it leverages the scalability and reliability of GCP services.
