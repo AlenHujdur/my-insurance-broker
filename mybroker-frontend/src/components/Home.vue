@@ -290,12 +290,13 @@ export default {
   data() {
     return {
       email: '',
-      showModal: false
+      showModal: false,
+      url: ''
     };
   },
   methods: {
     async subscribe() {
-    let authenticityToken = '';
+    /*let authenticityToken = '';
     try {
         const response = await axios.get('https://mybrokerservice-ijciww6s2q-ew.a.run.app/authenticity_token');
         authenticityToken = response.data.token;
@@ -303,14 +304,19 @@ export default {
         //CRSF_TOKEN not needed based on this artical https://www.appsignal.com/for/invalid_authenticity_token
     } catch (error) {
         console.error('Error fetching authenticity token:', error);
-    }
+    }*/
 
     const headers = {
         //'X-CSRF-Token':  authenticityToken,
         'Content-Type': 'application/json'
     };
-    //with axios
-    axios.post('https://mybrokerservice-ijciww6s2q-ew.a.run.app/api/v1/new-subscriber', { email: this.email }, { headers })
+    if (process.env.NODE_ENV === 'development') {
+      this.url = 'http://localhost:3000/api/v1/new-subscriber';
+    }else
+    {
+      this.url = 'https://mybrokerservice-ijciww6s2q-ew.a.run.app/api/v1/new-subscriber';
+    }
+    axios.post(this.url, { email: this.email }, { headers })
         .then(response => {
         console.log(response, 'Subscribed successfully!');
         this.showModal = true;

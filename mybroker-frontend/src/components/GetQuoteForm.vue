@@ -1,97 +1,59 @@
 <template>
     <div class="multistep-form container">
       <div class="step" :class="{ hide: currentStep !== 1 }">
-        <h2>Step 1: Business Type</h2>
-        <label for="businessType">Select your business type:</label>
-        <select v-model="selectedBusinessType" id="businessType">
+        <h2>Legal type</h2>
+        <label for="naturalPerson">Are you a legal person?</label>
+        <select v-model="naturalPerson" id="naturalPerson">
           <option value="">Select</option>
-          <option value="solo">Solo Practitioner</option>
-          <option value="group">Group Practice</option>
-          <option value="clinic">Clinic</option>
-          <option value="hospital">Hospital</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
         </select>
-        <button @click="nextStep" :disabled="!selectedBusinessType">Next</button>
+        <button @click="nextStep" :disabled="naturalPerson !== 'yes'">Next</button>
+        <div v-if="naturalPerson === 'no'" style="color:#00b779">
+          You should register your business first.<br>
+          Please follow this <a href="link">link</a> to learn more...
+        </div>
       </div>
 
       <div class="step" :class="{ hide: currentStep !== 2 }">
-        <h2>Step 2: Industry</h2>
-        <label for="industry">Select your industry:</label>
-        <select v-model="selectedIndustry" id="industry">
-          <option value="">Select</option>
-          <option value="familyMedicine">Family Medicine</option>
-          <option value="internalMedicine">Internal Medicine</option>
-          <option value="pediatrics">Pediatrics</option>
-          <option value="surgery">Surgery</option>
-          <option value="obstetricsGynecology">Obstetrics & Gynecology</option>
-          <!-- Add more options based on your specific requirements -->
-        </select>
-        <button @click="nextStep" :disabled="!selectedIndustry">Next</button>
+        <h2>Step 2: The revenue</h2>
+        <label for="annualRevenue">The revenue of the business</label>
+        <input type="number" id="annualRevenue" v-model="annualRevenue"/>
+        <p style="color:#00b779">Enter your annual revenue.<br>The revenue of your business in € of the previous year.</p>
+        <button @click="nextStep" :disabled="!annualRevenue">Next</button>
       </div>
 
       <div class="step" :class="{ hide: currentStep !== 3 }">
-        <h2>Step 3: Coverage Needs</h2>
-        <p>Specify your coverage needs:</p>
-
-        <label for="policyLimit">Policy Limit:</label>
-        <input type="text" id="policyLimit" v-model="policyLimit" placeholder="Enter policy limit" />
-
-        <label for="deductible">Deductible:</label>
-        <input type="text" id="deductible" v-model="deductible" placeholder="Enter deductible amount" />
-
-        <label for="coveragePeriod">Coverage Period:</label>
-        <select v-model="selectedCoveragePeriod" id="coveragePeriod">
-          <option value="">Select</option>
-          <option value="1">1 Year</option>
-          <option value="2">2 Years</option>
-          <option value="3">3 Years</option>
-          <option value="4">4 Years</option>
-          <option value="5+">more than 5 Years</option>
-          <!-- Add more options based on your specific requirements -->
-        </select>
-        <p>Contact details:</p>
+        <h2>Step 3: Select business industry for which you want a cover</h2>
+        <label for="nacebelCodes">NACEBEL Codes:</label>
+        <div v-for="cover in covers" :key="cover.code">
+          <input type="checkbox" :id="cover.code" v-model="nacebelCodes" :value="cover.code">
+          <label :for="cover.code">{{ cover.label_fr }}</label>
+        </div>
+        <button @click="nextStep" :disabled="!nacebelCodes.length">Next</button>
+      </div>
+      <div class="step" :class="{ hide: currentStep !== 4 }">
+        <h2>Step 4: Fill in business and contact info</h2>
         <ul>
+          <li>Enterprise Number:<input type="text" v-model="enterpriseNumber" placeholder="0123456789" /></li>
+          <p v-if="!isEnterpriseNumberValid" style="color:#00b779">The Enterprise Number is invalid.<br>Tip: it always starts with 0 and has exactly 10 digits</p>
+          <li>Legal name: <input type="text" v-model="legalName" /></li>
           <li>Email: <input type="email" v-model="email" /></li>
           <li>Phone: <input type="tel" v-model="phone" /></li>
           <li>Name: <input type="text" v-model="name" /></li>
         </ul>
-        <button @click="nextStep">Next</button>
+        <button @click="nextStep" :disabled="!enterpriseNumber || !legalName || !email || !phone || !name || !isEnterpriseNumberValid">Next</button>
       </div>
-
-      <div class="step" :class="{ hide: currentStep !== 4 }">
-        <h2>Step 4: Summary</h2>
-        <p>Business Type:</p>
-        <select v-model="selectedBusinessType" id="businessType">
-          <option value="">Select</option>
-          <option value="solo">Solo Practitioner</option>
-          <option value="group">Group Practice</option>
-          <option value="clinic">Clinic</option>
-          <option value="hospital">Hospital</option>
-        </select>
-        <p>Industry:</p>
-        <select v-model="selectedIndustry" id="industry">
-          <option value="">Select</option>
-          <option value="familyMedicine">Family Medicine</option>
-          <option value="internalMedicine">Internal Medicine</option>
-          <option value="pediatrics">Pediatrics</option>
-          <option value="surgery">Surgery</option>
-          <option value="obstetricsGynecology">Obstetrics & Gynecology</option>
-          <!-- Add more options based on your specific requirements -->
-        </select>
+      <div class="step" :class="{ hide: currentStep !== 5 }" id="summary">
+        <h2>Step 5: Summary</h2>
+        <div v-for="cover in covers" :key="cover.code">
+          <input type="checkbox" :id="cover.code" v-model="nacebelCodes" :value="cover.code">
+          <label :for="cover.code">{{ cover.label_fr }}</label>
+        </div>
         <p>
-          Coverage needs:
           <ul>
-            <li>Policy Limit: <input type="text" id="policyLimit" v-model="policyLimit" /></li>
-            <li> Deductible: <input type="text" id="deductible" v-model="deductible" /></li>
-            <li>
-              <label for="summaryCoveragePeriod">Coverage Period:</label>
-              <select id="summaryCoveragePeriod" v-model="selectedCoveragePeriod">
-                <option value="">Select</option>
-                <option value="1">1 Year</option>
-                <option value="2">2 Years</option>
-                <option value="3">3 Years</option>
-                <!-- Add more options based on your specific requirements -->
-              </select>
-            </li>
+            <li>Annual Revenue: <input type="text" id="annualRevenue" v-model="annualRevenue" /></li>
+            <li>Enterprise Number: <input type="text" v-model="enterpriseNumber"/></li>
           </ul>
         </p>
         <p>Contact details:</p>
@@ -100,6 +62,21 @@
           <li>Phone: <input type="tel" v-model="phone" /></li>
           <li>Name: <input type="text" v-model="name" /></li>
         </ul>
+        <div v-if="showResults">
+          <div v-if="result">
+            Available: {{ result.data.available }}<br>
+            Coverage Ceiling: {{ result.data.coverageCeiling }}<br>
+            Deductible: {{ result.data.deductible }}<br>
+            Quote ID: {{ result.data.quoteId }}<br>
+            <div v-if="result.data.grossPremiums">
+              After Delivery: {{ result.data.grossPremiums.afterDelivery }}<br>
+              Public Liability: {{ result.data.grossPremiums.publicLiability }}<br>
+              Professional Indemnity: {{ result.data.grossPremiums.professionalIndemnity }}<br>
+              Entrusted Objects: {{ result.data.grossPremiums.entrustedObjects }}<br>
+              Legal Expenses: {{ result.data.grossPremiums.legalExpenses }}<br>
+            </div>
+          </div>
+        </div>
         <div class="button-container">
           <button class="btn btn-primary" @click="submitForm">
             {{ isFormSaved ? 'Update' : 'Submit' }}
@@ -123,53 +100,65 @@
 
   <script>
   import axios from 'axios';
+  import nacebels from '../../data/nacebels.json';
   export default {
     name: 'GetQuoteComponent',
     data() {
       return {
         currentStep: 1,
-        selectedBusinessType: '',
-        selectedIndustry: '',
-        industry: '',
-        policyLimit: '',
+        naturalPerson: '',//selectedBusinessType: '',
+        nacebelCodes: [],
+        annualRevenue:'',//policyLimit: '',
+        enterpriseNumber: '',
+        legalName: '',
         deductible: '',
-        selectedCoveragePeriod: '',
         email: '',
         phone: '',
         name: '',
         showModal: false, // Added showModal data property
+        url: '',
+        covers: [],
+        success: false,
+        message: '',
+        data: null,
+        showResults: false,
+        result: null,
       };
     },
     mounted() {
+      //get covers
+      this.getCovers();
       // Retrieve saved data from localStorage if available
       const savedData = localStorage.getItem('quoteFormData');
       if (savedData) {
         const parsedData = JSON.parse(savedData);
-        this.selectedBusinessType = parsedData.selectedBusinessType;
-        this.selectedIndustry = parsedData.selectedIndustry;
-        this.industry = parsedData.industry;
-        this.policyLimit = parsedData.policyLimit;
-        this.deductible = parsedData.deductible;
-        this.selectedCoveragePeriod = parsedData.selectedCoveragePeriod;
+        this.naturalPerson = parsedData.naturalPerson;
+        this.nacebelCodes = parsedData.nacebelCodes;
+        this.enterpriseNumber = parsedData.enterpriseNumber;
+        this.annualRevenue = parsedData.annualRevenue;
+        this.legalName = parsedData.legalName;
         this.email = parsedData.email;
         this.phone = parsedData.phone;
         this.name = parsedData.name;
 
         // Set the current step based on the retrieved data
         if (
-          this.selectedBusinessType &&
-          this.selectedIndustry &&
-          this.policyLimit &&
-          this.deductible &&
-          this.selectedCoveragePeriod &&
-          this.email &&
-          this.phone &&
-          this.name
-        ) {
-          this.currentStep = 4; // Show the summary step if all data is available
-        } else if (this.selectedBusinessType && this.selectedIndustry) {
+            this.naturalPerson &&
+            this.enterpriseNumber &&
+            this.legalName &&
+            this.nacebelCodes &&
+            this.annualRevenue&&
+            this.email &&
+            this.phone &&
+            this.name
+        )
+        {
+          this.currentStep = 5; // Show the summary step if all data is available
+        } else if (this.nacebelCodes && this.name && this.email && this.phone && this.legalName && this.annualRevenue && this.enterpriseNumber) {
+          this.currentStep = 4; // Show the coverage needs step if business type and industry are selected
+        } else if (this.nacebelCodes) {
           this.currentStep = 3; // Show the coverage needs step if business type and industry are selected
-        } else if (this.selectedBusinessType) {
+        } else if (this.annualRevenue) {
           this.currentStep = 2; // Show the industry step if business type is selected
         } else {
           this.currentStep = 1; // Show the first step if no data is available
@@ -179,32 +168,48 @@
     computed: {
       isFormSaved() {
         return (
-          this.selectedBusinessType &&
-          this.selectedIndustry &&
-          this.policyLimit &&
-          this.deductible &&
-          this.selectedCoveragePeriod &&
-          this.email &&
-          this.phone &&
-          this.name
+            this.naturalPerson &&
+            this.enterpriseNumber &&
+            this.legalName &&
+            this.nacebelCodes &&
+            this.annualRevenue&&
+            this.email &&
+            this.phone &&
+            this.name
         );
       },
+      isEnterpriseNumberValid(){
+        const regex = /^0\d{9}$/; // Regular expression to match the required format
+
+        // Return true if the enterpriseNumber matches the required format, otherwise false
+        return regex.test(this.enterpriseNumber);
+      }
     },
     methods: {
       nextStep() {
         this.currentStep++;
+      },
+      getAdviceTitle(advice) {
+        // Extract the advice title from the HTML string
+        const titleRegex = /<h3>(.*?)<\/h3>/;
+        const matches = advice.match(titleRegex);
+        return matches ? matches[1] : "";
+      },
+      getAdviceContent(advice) {
+        // Remove the advice title from the HTML string
+        const titleRegex = /<h3>.*?<\/h3>/;
+        return advice.replace(titleRegex, "");
       },
       submitForm() {
         // Save form data to localStorage
         localStorage.setItem(
           'quoteFormData',
           JSON.stringify({
-            selectedBusinessType: this.selectedBusinessType,
-            selectedIndustry: this.selectedIndustry,
-            industry: this.industry,
-            policyLimit: this.policyLimit,
-            deductible: this.deductible,
-            selectedCoveragePeriod: this.selectedCoveragePeriod,
+            naturalPerson: this.naturalPerson,
+            enterpriseNumber: this.enterpriseNumber,
+            legalName: this.legalName,
+            nacebelCodes: this.nacebelCodes,
+            annualRevenue: this.annualRevenue,
             email: this.email,
             phone: this.phone,
             name: this.name,
@@ -228,12 +233,12 @@
         localStorage.removeItem('quoteFormData');
 
         // Reset form fields and step
-        this.selectedBusinessType = '';
-        this.selectedIndustry = '';
-        this.industry = '';
-        this.policyLimit = '';
+        this.naturalPerson = '',
+        this.enterpriseNumber= '',
+        this.legalName= '',
+        this.nacebelCodes = '';
+        this.annualRevenue = '';
         this.deductible = '';
-        this.selectedCoveragePeriod = '';
         this.email = '';
         this.phone = '';
         this.name = '';
@@ -241,31 +246,85 @@
       },
       async subscribe() {
 
-    const headers = {
-        'Content-Type': 'application/json'
-    };
-    axios.post('https://mybrokerservice-ijciww6s2q-ew.a.run.app/api/v1/new-requested-quote', {
-        subscriber: {
-                email: this.email,
-                phone: this.phone,
-                name: this.name,
-            },
-            business_type: this.selectedBusinessType,
-            industry: this.selectedIndustry,
-            policy_limit: this.policyLimit,
-            deductible: this.deductible,
-            coverage_period: this.selectedCoveragePeriod,
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        //check environment
+        if (process.env.NODE_ENV === 'development') {
+            this.url = 'http://localhost:3000/api/v1/new-requested-quote';
+        }else
+        {
+          this.url = 'https://mybrokerservice-ijciww6s2q-ew.a.run.app/api/v1/new-requested-quote';
+        }
+        axios.post(this.url, {
+            subscriber: {
+                    email: this.email,
+                    phone: this.phone,
+                    name: this.name,
+                },
+                natural_person: this.naturalPerson,
+                nacebel_codes: this.nacebelCodes,
+                annual_revenue: this.annualRevenue,
+                enterprise_number: this.enterpriseNumber,
+                legal_name: this.legalName
+                //deductible: this.deductible,
+                //coverage_period: this.selectedCoveragePeriod,
 
-     }, { headers })
+         }, { headers })
+            .then(result => {
+            console.log(result, 'Subscribed successfully!');
+              this.success = result.success;
+              this.message = result.message;
+              this.result = JSON.parse(result.data.quote.response);
+              console.log(this.result.data.deductible)
+              this.showModal = true;
+              this.showResults = true;
+            })
+            .catch(error => {
+            console.error('Error subscribing:', error);
+            });
+      },
+      getCovers(){
+        //check environment
+        if (process.env.NODE_ENV === 'development') {
+          this.url = 'http://localhost:3000/api/v1/nacebels';
+        }else
+        {
+          this.url = 'https://mybrokerservice-ijciww6s2q-ew.a.run.app/api/v1/nacebels';
+        }
+        axios.get(this.url)
         .then(response => {
-        console.log(response, 'Subscribed successfully!');
-        this.showModal = true;
+          if (response.data.length > 0) {
+            this.covers = response.data
+          }
+          else
+          {
+            this.covers = nacebels.map(nacebel => {
+              return {
+                data: {
+                  id: nacebel.id,
+                  level_nr: nacebel.level_nr,
+                  code: nacebel.code,
+                  parent_code: nacebel.parent_code,
+                  label_nl: nacebel.label_nl,
+                  label_fr: nacebel.label_fr,
+                  label_de: nacebel.label_de,
+                  label_en: nacebel.label_en,
+                  created_at: nacebel.created_at,
+                  updated_at: nacebel.updated_at,
+                }
+              };
+            });
+            // Access the individual objects in the array
+          }
+          console.log(this.covers);
         })
         .catch(error => {
-        console.error('Error subscribing:', error);
+          console.log(error);
         });
-    },
-    },
+        return this.covers;
+      },
+   },
   };
   </script>
 
@@ -312,5 +371,8 @@
   .button-container {
     display: flex;
     justify-content: space-between;
+  }
+  #summary {
+    //margin-top: 100px;
   }
   </style>
