@@ -30,11 +30,11 @@ The Vue.js frontend of the MyBroker Insurance project provides a user-friendly i
 # Local Development Environment
 To set up the local development environment for the MyBroker Insurance project, follow the steps below:
 
-## Rails Backend (mybroker-service folder):
+### Rails Backend (mybroker-service folder):
 
 In the root folder of the Rails project (mybroker-service), run the **./run_app.sh** script. This script sets up the necessary dependencies and starts the Rails server for local development.
 
-## Vue.js Frontend (mybroker-frontend folder):
+### Vue.js Frontend (mybroker-frontend folder):
 
 Set up the Vue.js project dependencies using a package manager npm. Run npm install, and
 start the local development server using the command **npm run serve**.
