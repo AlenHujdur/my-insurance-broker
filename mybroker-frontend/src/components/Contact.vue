@@ -128,10 +128,6 @@ data() {
 },
 methods: {
   subscribe() {
-    alert('Thank you for contacting us!');
-
-    console.log(JSON.stringify(this));
-    //check environment
     if (process.env.NODE_ENV === 'development') {
       this.url = 'http://localhost:3000/api/v1/new-subscriber';
     } else {
@@ -140,7 +136,7 @@ methods: {
     axios.post(this.url, { name: this.name, email: this.email, message: this.message, phone: this.phone  })
       .then(response => {
         // Handle the success response
-        console.log('Subscribed successfully!');
+        alert('Subscribed successfully!');
         console.log(response);
         this.email = '';
       })
