@@ -4,7 +4,30 @@
 The MyBroker Insurance project is a web-based application that aims to provide insurance brokerage services to users. It consists of two main components: a Rails backend for managing data and business logic, and a Vue.js frontend for user interaction. The project is deployed on Google Cloud Platform (GCP), with the Rails backend hosted on Cloud Run and the Vue.js frontend hosted on App Engine.
 
 ### Deployment Details
-The production version of the project can be accessed at the following URL: https://mybrokerinsurance.ew.r.appspot.com/. The Rails backend is deployed on Cloud Run and uses a PostgreSQL database. The Vue.js frontend is hosted on App Engine. For learning about Rails deployment on GCP, please see this https://cloud.google.com/ruby/rails/run
+The production version of the project can be accessed at the following URL: https://mybrokerinsurance.ew.r.appspot.com/. 
+
+The Rails backend is deployed on Cloud Run and uses a PostgreSQL database. 
+
+Example of most frequent commands used to deploy app on GCP (Cloud Run):
+
+1. For db postgres creation: **gcloud sql instances create mybrokerinstance \
+    --database-version POSTGRES_12 \
+    --tier db-f1-micro \
+    --region europe-west1**
+    
+2. **gcloud builds submit --config cloudbuild.yaml     --substitutions _SERVICE_NAME=mybrokerservice,_INSTANCE_NAME=mybrokerinstance,_REGION=europe-west1,_SECRET_NAME=rails_secret**
+
+3. **gcloud run deploy mybrokerservice \
+     --platform managed \
+     --region europe-west1 \
+     --image gcr.io/mybrokerinsurance/mybrokerservice \
+     --add-cloudsql-instances mybrokerinsurance:europe-west1:mybrokerinstance \
+     --allow-unauthenticated \
+     --max-instances=1**
+
+The Vue.js frontend is hosted on App Engine. To build vue project for production run **npm run build** and **gcloud app deploy**.
+
+For detaild info about Rails deployment on GCP, please visit https://cloud.google.com/ruby/rails/run
 
 ### Environment Variables
 The Rails backend relies on environment variables for configuration. These variables are loaded from a .env file in the production environment. It is essential to ensure that the required variables are properly set before deploying the application. Please refer to the .env file for the specific environment variables and their values.
